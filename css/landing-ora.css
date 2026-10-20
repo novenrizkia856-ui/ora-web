@@ -1,0 +1,67 @@
+/* Ora pieces on the RELL template: stock charts over the market card paintings,
+   the Coming soon shimmer, and the wallet modal and toasts drawn in the template's
+   own language (paper panel, ink buttons, mono labels). Uses the --rell-* tokens
+   from landing.css, so nothing here introduces a new color. */
+
+/* ------------------------------------------------------------------ market card charts
+   Each card's right panel gets a price line under the quote. The panel is the
+   template's flex column, so the chart sits in its flow, after the quote lockup. */
+
+.ora-chart { position: relative; flex: 1 1 auto; width: 100%; min-height: 150px; margin-top: -40px; pointer-events: none; }
+.ora-chart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ora-chart__line { fill: none; stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ora-chart__grid { stroke: var(--rell-line); stroke-width: 1; stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
+.ora-chart__dot { fill: #fff; }
+.ora-chart__ring { fill: var(--rell-night); stroke: #fff; stroke-width: 1.5; }
+.ora-chart__tag { font: 500 9px/1 var(--rell-mono); letter-spacing: 1px; fill: var(--rell-grey); }
+.ora-chart__last { fill: #fff; }
+.ora-chart__halo { fill: rgba(255, 255, 255, .25); transform-box: fill-box; transform-origin: center; animation: ora-halo 2.4s cubic-bezier(.22, 1, .36, 1) infinite; }
+@keyframes ora-halo { 0% { transform: scale(1); opacity: .9; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
+.ora-chart__label {
+  position: absolute; left: 0; top: 0; right: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  color: #fff; font: 400 14px/1 var(--rell-sans); letter-spacing: -.3px; font-variant-numeric: tabular-nums;
+}
+.ora-chart__label b { font-weight: 400; font-size: 20px; letter-spacing: -.6px; }
+.ora-chart__label span { font: 500 11px/1 var(--rell-mono); letter-spacing: 1px; text-transform: uppercase; color: var(--rell-grey); }
+@media (max-width: 1439.98px) { .ora-chart { min-height: 120px; margin-top: -24px; } }
+@media (max-width: 809.98px) { .ora-chart { flex: none; height: 140px; min-height: 0; margin-top: -8px; } }
+
+/* draw once when first seen, with the template curve */
+.js .ora-chart .ora-chart__line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.js .ora-chart .ora-chart__area, .js .ora-chart .ora-chart__marks { opacity: 0; }
+.js .ora-chart.is-drawn .ora-chart__line { stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s cubic-bezier(.22, 1, .36, 1); }
+.js .ora-chart.is-drawn .ora-chart__area { opacity: 1; transition: opacity 1s ease .5s; }
+.js .ora-chart.is-drawn .ora-chart__marks { opacity: 1; transition: opacity .8s ease 1s; }
+
+/* ------------------------------------------------------------------ Coming soon shimmer */
+
+.rell-ca__text.ora-shimmer {
+  background: linear-gradient(100deg, rgba(255, 255, 255, .62) 0%, rgba(255, 255, 255, .62) 40%, #fff 50%, rgba(255, 255, 255, .62) 60%, rgba(255, 255, 255, .62) 100%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: ora-shimmer 3s linear infinite;
+}
+@keyframes ora-shimmer { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+
+/* the nav Connect button shows the address once connected */
+.rell-connect[data-state="connected"] { font-family: var(--rell-mono); letter-spacing: 0; font-size: 13px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rell-ca__text.ora-shimmer { animation: none; color: #fff; background: none; }
+  .ora-chart__halo { animation: none; opacity: 0; }
+  .js .ora-chart .ora-chart__line { stroke-dashoffset: 0; }
+  .js .ora-chart .ora-chart__area, .js .ora-chart .ora-chart__marks { opacity: 1; }
+}
+
+/* The export's empty "Sculpture Loader" container covers the first screen at z-index 10
+   and swallowed clicks on the hero Copy button (the RELL page has the same issue).
+   It draws nothing, so it can safely let the pointer through. */
+.framer-xy1vuf-container { pointer-events: none; }
+/* the two hero sculptures are decoration too; a long token address runs under their hands */
+.framer-nl91j1, .framer-144lxoz { pointer-events: none; }
+
+/* touch: the template's small buttons keep their look but get a 44px hit area */
+@media (pointer: coarse) {
+  .rell-ca__copy, .rell-btn { position: relative; }
+  .rell-ca__copy::after { content: ""; position: absolute; inset: -8px -4px; }
+  .rell-btn::after { content: ""; position: absolute; inset: -4px 0; }
+}

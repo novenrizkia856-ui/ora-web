@@ -1,0 +1,99 @@
+/* Docs page. Layered on css/site.css. A dark hero in the landing page's
+   language, then a sticky contents list and the documents on the cream canvas. */
+
+.docs-body { background: var(--paper); }
+
+/* ------------------------------------------------------------------ hero */
+
+.docs-hero { position: relative; overflow: hidden; background: var(--night); color: #fff; padding: 190px var(--gutter) 90px; }
+.docs-hero__art { position: absolute; inset: 0; }
+.docs-hero__art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; opacity: .45; }
+.docs-hero__art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(29, 29, 29, .4), var(--night)); }
+.docs-hero__inner { position: relative; max-width: 900px; margin: 0 auto; display: grid; gap: 20px; justify-items: center; text-align: center; }
+.docs-hero .label { color: rgba(255, 255, 255, .6); }
+.docs-hero .lede { color: rgba(255, 255, 255, .72); }
+@media (max-width: 809.98px) { .docs-hero { padding: 140px var(--gutter) 64px; } }
+
+/* ------------------------------------------------------------------ layout */
+
+.docs-shell {
+  display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 64px;
+  max-width: 1320px; margin: 0 auto; padding: 72px var(--gutter) 40px;
+}
+@media (max-width: 959px) { .docs-shell { grid-template-columns: 1fr; gap: 24px; padding-top: 32px; } }
+
+.docs-side { position: sticky; top: 120px; align-self: start; max-height: calc(100vh - 140px); overflow: auto; }
+.docs-side__label { list-style: none; cursor: default; margin-bottom: 18px; font: 500 14px/1.2 var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--grey); }
+.docs-side__label::-webkit-details-marker { display: none; }
+.docs-side__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.docs-side__list a {
+  display: block; padding: 9px 12px; border-radius: var(--radius); text-decoration: none;
+  color: var(--grey-dark); font-size: 15px; transition: background-color .2s ease, color .2s ease;
+}
+.docs-side__list a:hover { background: rgba(0, 0, 0, .05); color: #000; }
+.docs-side__list a.is-current { background: #fff; color: #000; box-shadow: inset 0 0 0 1px var(--line); }
+
+@media (max-width: 959px) {
+  .docs-side { position: static; max-height: none; padding: 16px 18px; border-radius: var(--radius); background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+  .docs-side__label { cursor: pointer; margin: 0; display: flex; justify-content: space-between; align-items: center; }
+  .docs-side__label::after { content: "+"; font: 400 22px/1 var(--sans); color: #000; }
+  .docs-side[open] > .docs-side__label { margin-bottom: 12px; }
+  .docs-side[open] > .docs-side__label::after { content: "\2212"; }
+}
+
+/* ------------------------------------------------------------------ documents */
+
+.docs-main { min-width: 0; display: grid; gap: 16px; }
+.doc {
+  padding: 40px; border-radius: var(--radius); background: #fff; box-shadow: inset 0 0 0 1px var(--line);
+  scroll-margin-top: 110px;
+}
+@media (max-width: 809.98px) { .doc { padding: 24px; } }
+.doc > * + * { margin-top: 16px; }
+.doc__title { font-size: clamp(30px, 3vw, 42px); letter-spacing: -1px; margin-bottom: 8px; }
+.doc h2:not(.doc__title) { font-size: 28px; letter-spacing: -.6px; margin-top: 36px; }
+.doc h3 { font-size: 22px; letter-spacing: -.4px; margin-top: 28px; }
+.doc h4 { font: 500 13px/1.2 var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--grey); margin-top: 24px; }
+.doc p { color: var(--grey-dark); max-width: 72ch; }
+.doc strong { color: #000; font-weight: 500; }
+.doc a { color: var(--brand); text-underline-offset: 3px; }
+.doc a:hover { color: #000; }
+.doc code { font: 400 .86em/1.4 var(--code); padding: 2px 6px; border-radius: 4px; background: var(--paper); color: #000; }
+
+.doc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--grey-dark); max-width: 72ch; }
+.doc-list li { position: relative; padding-left: 22px; }
+.doc-list li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: #000; }
+.doc-list--num { counter-reset: n; }
+.doc-list--num li { counter-increment: n; padding-left: 34px; }
+.doc-list--num li::before {
+  content: counter(n, decimal-leading-zero); width: auto; height: auto; top: .2em; left: 0; background: none;
+  font: 500 12px/1.4 var(--mono); letter-spacing: 1px; color: var(--grey);
+}
+
+.doc-pre { margin: 0; padding: 20px; border-radius: var(--radius); background: var(--night); color: #f3f1ed; overflow: auto; }
+.doc-pre code { background: none; padding: 0; color: inherit; font-size: 13px; line-height: 1.6; }
+
+.doc-table { overflow-x: auto; border-radius: var(--radius); box-shadow: inset 0 0 0 1px var(--line); }
+.doc-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.doc-table th {
+  text-align: left; padding: 12px 16px; background: var(--paper);
+  font: 500 12px/1.2 var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--grey);
+}
+.doc-table td { padding: 12px 16px; border-top: 1px solid var(--line); color: var(--grey-dark); vertical-align: top; }
+.doc-table td:first-child { color: #000; font-weight: 500; }
+
+.doc-flow { padding: 24px; border-radius: var(--radius); background: var(--paper); }
+.doc-flow__list { list-style: none; margin: 0; padding: 0; counter-reset: step; display: grid; gap: 10px; }
+.doc-flow__step {
+  counter-increment: step; position: relative; padding: 14px 16px 14px 56px; border-radius: var(--radius);
+  background: #fff; box-shadow: inset 0 0 0 1px var(--line);
+}
+.doc-flow__step::before {
+  content: counter(step, decimal-leading-zero); position: absolute; left: 16px; top: 15px;
+  font: 500 12px/1.4 var(--mono); letter-spacing: 1px; color: var(--grey);
+}
+.doc-flow__note { margin-top: 12px; font-size: 14px; color: var(--grey); }
+
+/* ------------------------------------------------------------------ footer */
+
+.docs-foot { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter); }

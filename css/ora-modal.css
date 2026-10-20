@@ -1,0 +1,71 @@
+/* Wallet modal and toasts for every page, drawn like the template's mobile sheet:
+   a paper panel, serif title, ink buttons with mono labels. The landing defines
+   --rell-* tokens and the app pages define the site.css tokens; both are covered. */
+
+.modal {
+  --m-paper: var(--paper, var(--rell-paper, #f3f1ed)); --m-grey: var(--grey, var(--rell-grey, #949494));
+  --m-serif: var(--serif, var(--rell-serif)); --m-sans: var(--sans, var(--rell-sans)); --m-mono: var(--mono, var(--rell-mono));
+  --m-night: var(--night, var(--rell-night, #1d1d1d)); --m-ease: var(--ease, var(--rell-ease, cubic-bezier(.22, 1, .36, 1)));
+}
+
+.modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; }
+.modal__scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, .4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.modal__panel {
+  position: relative; width: min(420px, 100%); max-height: calc(100vh - 32px); overflow: auto; box-sizing: border-box;
+  padding: 24px; border-radius: 20px; background: var(--m-paper); color: #000;
+  display: flex; flex-direction: column; gap: 20px; animation: ora-modal-in .45s var(--m-ease);
+}
+.modal.is-closing .modal__panel { opacity: 0; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
+.modal.is-closing .modal__scrim { opacity: 0; transition: opacity .2s ease; }
+.modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.modal__head h2 { margin: 0; font: 400 34px/1.1 var(--m-serif); letter-spacing: -1px; }
+.modal__close {
+  position: relative; flex: none; width: 40px; height: 40px; border: 0; border-radius: 8px; background: #000; color: #fff; cursor: pointer;
+  display: grid; place-items: center;
+}
+.modal__close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.modal__body { display: flex; flex-direction: column; gap: 14px; }
+.modal__body p { margin: 0; font: 400 15px/1.45 var(--m-sans); letter-spacing: -.3px; color: rgba(0, 0, 0, .66); }
+.modal__body .small { font-size: 13px; }
+.modal__body .faint { color: var(--m-grey); }
+.modal__body .center { text-align: center; }
+.modal__body .mono { font-family: var(--m-mono); font-size: 13px; letter-spacing: 0; word-break: break-all; color: #000; }
+.modal__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.modal .wallet-list { display: flex; flex-direction: column; border-top: 1px solid rgba(0, 0, 0, .08); }
+.modal .wallet-option {
+  appearance: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 56px;
+  padding: 0; border: 0; border-bottom: 1px solid rgba(0, 0, 0, .08); background: none; cursor: pointer; color: #000;
+  font: 400 26px/1.15 var(--m-serif); letter-spacing: -.5px; text-align: left;
+}
+.modal .wallet-option span:last-child { font: 500 11px/1 var(--m-mono); letter-spacing: 1px; text-transform: uppercase; color: var(--m-grey); }
+.modal .wallet-option:hover { opacity: .6; }
+.modal .row { display: flex; align-items: center; }
+.modal .wrap { flex-wrap: wrap; }
+.modal .gap-8 { gap: 8px; }
+.modal .stack { display: flex; flex-direction: column; }
+
+/* buttons rendered by wallet.js take the template's ink button shape */
+.modal .btn {
+  appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box;
+  min-height: 44px; padding: 12px 16px; border: 0; border-radius: 8px; cursor: pointer; text-decoration: none;
+  font: 500 12px/1 var(--m-mono); letter-spacing: 1px; text-transform: uppercase; transition: opacity .2s ease, box-shadow .2s ease;
+}
+.modal .btn--primary { background: #000; color: #fff; }
+.modal .btn--primary:hover { opacity: .82; }
+.modal .btn--secondary, .modal .btn--ghost { background: none; color: #000; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3); }
+.modal .btn--secondary:hover, .modal .btn--ghost:hover { box-shadow: inset 0 0 0 1px #000; }
+.modal .btn--block { width: 100%; }
+.modal .btn .icon { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.modal :focus-visible { outline: 2px solid #000; outline-offset: 2px; }
+
+/* toasts from the shared app helpers sit where the template's toast region is */
+.toasts { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.toasts .toast.is-leaving { opacity: 0; transition: opacity .24s ease; }
+
+@keyframes ora-modal-in { from { opacity: 0; transform: translateY(-12px); } }
+.toasts .toast { padding: 12px 16px; border-radius: 10px; background: #000; color: #fff; font: 400 14px/1.3 var(--sans, var(--rell-sans)); letter-spacing: -.3px; animation: ora-modal-in .35s cubic-bezier(.22, 1, .36, 1); }
+.toasts .toast.is-error { background: #b42318; }
+
+/* app pages pass the two part button from site.css; keep its own blocks */
+.modal .btn:has(> .btn__label) { min-height: 0; padding: 0; background: none; box-shadow: none; }
+.modal .btn:has(> .btn__label):hover { opacity: 1; }

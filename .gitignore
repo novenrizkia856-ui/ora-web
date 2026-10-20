@@ -1,0 +1,6 @@
+# Raw SingleFile save of the reference page (8.7 MB). The port script uses reference/rell-index.html.
+reference/rell-landing.html
+node_modules/
+.vercel/
+.DS_Store
+Thumbs.db
